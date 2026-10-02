@@ -438,3 +438,6 @@ button { background: var(--accent); }
   .card { width: 50vw; margin: -33.4vw 0 0 -25vw; top: 40%; }
   .info .display { font-size: 22px; }
 }
+
+/* 휴대폰: 아래 기사 글을 조금 올린다(홈 막대 · 주소창에 붙지 않게) */
+@media (max-width: 760px) { .info { bottom: calc(34px + env(safe-area-inset-bottom)); } }
