@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>일상의 발견 — 가보고, 써보고, 해보며 발견한 일상의 쓸모</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Noto+Serif+KR:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-tone="dark">
+<div class="bg" aria-hidden="true"></div>
+<div class="light" aria-hidden="true"></div>
+
+<header class="top">
+  <a class="brand" href="#top"><b>일상의 발견</b><small>DAILY DISCOVERIES</small></a>
+  <nav class="menu" id="menu"></nav>
+  <a class="write" href="#comments">댓글 쓰기</a>
+</header>
+
+<div class="flow" id="top">
+  <!-- 3D 서가: 스크롤하면 기사 표지들 사이를 지나간다 -->
+  <section class="tunnel" id="articles">
+    <div class="pin">
+      <div class="world" id="world"></div>
+      <div class="info" id="info">
+        <span class="i-cat" id="i-cat"></span>
+        <h1 class="display" id="i-title"><span class="ln"><span></span></span></h1>
+        <p class="i-sum" id="i-sum"></p>
+        <a class="a-link" href="#comments" id="go"><span id="i-meta"></span><span>이야기 남기기 ↗</span></a>
+      </div>
+      <div class="count" id="count"></div>
+      <div class="cats" id="cats"></div>
+      <div class="finale" id="finale"><h2 class="display"><span>가보고, 써보고,</span><span>해보며 발견한 것들</span></h2></div>
+    </div>
+  </section>
+
+  <section class="block mag-lead" id="lead-sec" data-reveal>
+    <div class="b-head">
+      <span class="b-no">대표 기사</span>
+      <h2 class="b-title"><span class="ln"><span>이번 주의</span></span><span class="ln"><span>발견</span></span></h2>
+      <p>직접 가 보고, 써 보고, 해 본 이야기 중에서 골랐어요.</p>
+    </div>
+    <div class="lead" id="lead"></div>
+  </section>
+
+  <section class="block mag-latest" id="latest-sec" data-reveal>
+    <div class="b-head">
+      <span class="b-no">최신 발견</span>
+      <h2 class="b-title"><span class="ln"><span>새로 실린</span></span><span class="ln"><span>이야기</span></span></h2>
+      <p>최근 발행된 글이에요. 협찬 글은 따로 표시해요.</p>
+    </div>
+    <ul class="latest" id="latest"></ul>
+  </section>
+
+  <section class="block mag-cats" id="cats-sec" data-reveal>
+    <div class="b-head">
+      <span class="b-no">카테고리</span>
+      <h2 class="b-title"><span class="ln"><span>다섯 갈래의</span></span><span class="ln"><span>일상</span></span></h2>
+      <p>공간·음식·여행·운동·취미·생활·사람을 다섯 갈래로 나눠 담아요.</p>
+    </div>
+    <ul class="catlist" id="catlist"></ul>
+  </section>
+
+  <section class="block mag-about" id="about" data-reveal>
+    <div class="b-head">
+      <span class="b-no">소개</span>
+      <h2 class="b-title"><span class="ln"><span>가보고, 써보고,</span></span><span class="ln"><span>해보며</span></span></h2>
+      <p>일상의 발견은 생활 속에서 소재를 찾아 독자가 알기 쉽게 전하는 매거진이에요.</p>
+    </div>
+    <div class="about-grid">
+      <div class="editor"><span class="face">박</span><div><b>에디터 박</b><p>체육 교사로 일하며 동네 식당·도서관·체육관을 직접 다녀 보고 씁니다. 방문·선택에 필요한 정보와 솔직한 경험을 함께 담아요.</p></div></div>
+      <div class="contact" id="contact"><b>광고·제휴 문의</b><p>브랜드 이야기, 취재 요청, 광고주 콘텐츠는 메일로 보내 주세요. 협찬 글은 독자가 알아볼 수 있게 표시합니다.</p><a class="pill" href="mailto:hello@example.com">hello@example.com</a></div>
+    </div>
+  </section>
+
+  <section class="block readers" id="readers" data-reveal>
+    <div class="b-head">
+      <span class="b-no">독자</span>
+      <h2 class="b-title"><span class="ln"><span>이번 호의</span></span><span class="ln"><span>독자들</span></span></h2>
+      <p>댓글을 남긴 사람이 여기에 실려요. 가장 최근 순서예요.</p>
+    </div>
+    <ul class="wall" id="wall"></ul>
+  </section>
+
+  <section class="block comments" id="comments" data-reveal>
+    <div class="b-head">
+      <span class="b-no">댓글</span>
+      <h2 class="b-title"><span class="ln"><span>읽고 난 뒤의</span></span><span class="ln"><span>이야기</span></span></h2>
+      <p>이름과 함께 남기면 위쪽 독자 자리에 바로 실려요.</p>
+    </div>
+    <div class="b-body">
+      <form id="form" class="form" autocomplete="off">
+        <div class="row">
+          <label>이름<input name="name" maxlength="16" required placeholder="표지에 실릴 이름"></label>
+          <label>기사<select name="article" id="pick"></select></label>
+        </div>
+        <label>내용<textarea name="text" maxlength="300" rows="3" required placeholder="읽고 떠오른 이야기를 남겨 주세요"></textarea></label>
+        <div class="row end"><span class="msg" id="msg" role="status"></span><button type="submit">남기기</button></div>
+      </form>
+      <ul class="list" id="list"></ul>
+    </div>
+  </section>
+
+  <footer class="foot2" id="foot"></footer>
+</div>
+<script src="data.js"></script>
+<script src="app.js"></script>
+<script src="footer.js"></script>
+<script src="reader.js"></script>
+</body>
+</html>
