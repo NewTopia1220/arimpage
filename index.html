@@ -20,9 +20,18 @@
 </header>
 
 <div class="flow" id="top">
-  <!-- 갈래 판: 카테고리가 처음부터 전부 보인다. 스크롤하면 펼쳐진 판이 접히고 다음 판이 펼쳐진다(접힌 판은 띠로 남는다) -->
+  <!-- 회전목마: 카테고리 표지가 둥글게 놓여 있고, 스크롤하면 한 칸씩 돈다. 지나간 표지는 뒤쪽으로 돌아가 작게 남는다 -->
   <section class="tunnel" id="articles">
-    <div class="pin"><div class="deck" id="deck"></div></div>
+    <div class="pin">
+      <div class="ring" id="ring"></div>
+      <div class="info" id="info">
+        <span class="i-cat" id="i-cat"></span>
+        <h1 class="display" id="i-title"><span class="ln"><span></span></span></h1>
+        <p class="i-sum" id="i-sum"></p>
+        <a class="a-link" href="#" id="go"><span id="i-meta"></span><span>↗</span></a>
+      </div>
+      <button class="next" id="next" type="button"><span class="n-hint">아래로 밀거나 눌러서</span><span id="n-label">다음</span><i aria-hidden="true">↓</i></button>
+    </div>
   </section>
 
   <section class="block mag-lead" id="lead-sec" data-reveal>
