@@ -3,8 +3,8 @@
 실행: `node server.js` → http://localhost:4173
 
 - `public/data.js` — 카테고리(`CATEGORIES`)와 기사(`ARTICLES`, `BODY`). 기사·문구는 예시다.
-  카테고리는 한 줄 더하면 첫 화면 서가 · 메뉴 · 카테고리 페이지에 같이 실린다.
-- `public/index.html` · `style.css` · `app.js` — 첫 화면 3D 서가(카테고리 표지)와 매거진 영역, 글 신청 폼
+  카테고리는 한 줄 더하면 첫 화면 갈래 판 · 메뉴 · 카테고리 페이지에 같이 실린다.
+- `public/index.html` · `style.css` · `app.js` — 첫 화면 갈래 판(하나만 펼쳐지고 나머지는 띠로 접혀 남는다)과 매거진 영역, 글 신청 폼
 - `public/reader.js` — 기사 읽기. 댓글은 각 글 안에만 있다(지우는 버튼 없음)
 - `public/admin.html` · `admin.js` — 관리 화면. 댓글 · 글 신청을 보고 지운다. 독자 화면 어디에도 링크하지 않는다
 - `public/store.js` — 댓글 · 글 신청 저장이 지나가는 한 곳
