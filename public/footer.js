@@ -5,8 +5,8 @@
   el.innerHTML = `
     <div class="f2-top">
       <nav class="f2-links">${CATS.map((c) => `<a href="category.html?c=${encodeURIComponent(c)}">${c}</a>`).join("")}</nav>
-      <nav class="f2-links"><a href="index.html#about">매거진 소개</a><a href="index.html#readers">독자</a><a href="index.html#comments">댓글</a></nav>
-      <div class="f2-cta"><p>가보고, 써보고, 해보며 발견한 일상의 쓸모.<br>광고주 콘텐츠와 취재 문의도 받아요.</p><a class="f2-btn" href="index.html#comments">문의 남기기 <span>→</span></a></div>
+      <nav class="f2-links"><a href="index.html#about">매거진 소개</a><a href="index.html#apply">글 신청하기</a></nav>
+      <div class="f2-cta"><p>가보고, 써보고, 해보며 발견한 일상의 쓸모.<br>광고주 콘텐츠와 취재 문의도 받아요.</p><a class="f2-btn" href="index.html#apply">글 신청하기 <span>→</span></a></div>
     </div>
     <div class="f2-word" aria-label="Daily Discoveries"><small>daily</small><b>${[...word].map((ch, i) => `<i style="--i:${i}">${ch}</i>`).join("")}</b></div>
     <div class="f2-end"><span><a href="#">이용약관</a><a href="#">개인정보처리방침</a></span><span>MARKETING MAGAZINE</span><span>© 일상의 발견 2026 · 기사와 사진은 예시예요</span></div>`;

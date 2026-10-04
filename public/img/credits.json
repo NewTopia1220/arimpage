@@ -18,33 +18,6 @@
   "page": "https://commons.wikimedia.org/wiki/File:%C5%8Chori_Terrace_The_interior_of_the_caf%C3%A9_%C5%8Chori-k%C5%8Den_Ch%C5%AB%C5%8D-ku_Fukuoka_20260605_165738.jpg"
  },
  {
-  "file": "a4.jpg",
-  "title": "File:Jebudo Island.jpg",
-  "artist": "Lee Hyungchan",
-  "license": "KOGL Type 1",
-  "w": 6000,
-  "h": 4000,
-  "page": "https://commons.wikimedia.org/wiki/File:Jebudo_Island.jpg"
- },
- {
-  "file": "a5.jpg",
-  "title": "File:170914-F-DC888-018 (39448289102).jpg",
-  "artist": "Los Angeles Air Force Base Space and Missile System Center",
-  "license": "Public domain",
-  "w": 4364,
-  "h": 2620,
-  "page": "https://commons.wikimedia.org/wiki/File:170914-F-DC888-018_(39448289102).jpg"
- },
- {
-  "file": "a7.jpg",
-  "title": "File:3A 665.jpg",
-  "artist": "Escuela16de17",
-  "license": "CC BY-SA 4.0",
-  "w": 2560,
-  "h": 1536,
-  "page": "https://commons.wikimedia.org/wiki/File:3A_665.jpg"
- },
- {
   "file": "a2.jpg",
   "title": "File:Graz University-Library reading-room.jpg",
   "artist": "Dr. Marcus Gossler",
@@ -52,10 +25,30 @@
   "page": "https://commons.wikimedia.org/wiki/File:Graz_University-Library_reading-room.jpg"
  },
  {
-  "file": "a6.jpg",
-  "title": "File:Woman shopping for storage baskets in home goods store.jpg",
+  "file": "dog.jpg",
+  "title": "File:Pomsky dog .jpg",
+  "artist": "GJH-hoond",
+  "license": "CC BY-SA 4.0",
+  "w": 3384,
+  "h": 3374,
+  "page": "https://commons.wikimedia.org/wiki/File:Pomsky_dog_.jpg"
+ },
+ {
+  "file": "book.jpg",
+  "title": "File:A white mug sits on open books beside a window.jpg",
   "artist": "Shixart1985",
   "license": "CC BY 2.0",
-  "page": "https://commons.wikimedia.org/wiki/File:Woman_shopping_for_storage_baskets_in_home_goods_store.jpg"
+  "w": 3547,
+  "h": 5313,
+  "page": "https://commons.wikimedia.org/wiki/File:A_white_mug_sits_on_open_books_beside_a_window.jpg"
+ },
+ {
+  "file": "run.jpg",
+  "title": "File:Bulwary Brynicy, Sosnowiec, Droga z Parku Tysiąclecia do Parku Fusińskiego.jpg",
+  "artist": "Krzysztof Popławski",
+  "license": "CC BY-SA 4.0",
+  "w": 3056,
+  "h": 4592,
+  "page": "https://commons.wikimedia.org/wiki/File:Bulwary_Brynicy,_Sosnowiec,_Droga_z_Parku_Tysi%C4%85clecia_do_Parku_Fusi%C5%84skiego.jpg"
  }
 ]
