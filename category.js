@@ -1,5 +1,5 @@
 /* 카테고리 페이지 — category.html?c=맛과 공간 */
-const DESC = { "맛과 공간": "맛집, 카페, 도서관, 머물기 좋은 장소", "여행과 나들이": "당일치기, 여행 코스, 숙박, 지역 명소", "운동과 취미": "러닝, 배드민턴, 골프, 다양한 체험", "생활과 발견": "생활용품, 사용기, 생활 서비스, 실용 정보", "사람과 생각": "에세이, 인터뷰, 교육 경험, 브랜드 이야기" };
+const DESC = Object.fromEntries(CATEGORIES.map((c) => [c.name, c.desc]));
 const q = new URLSearchParams(location.search).get("c");
 const cat = CATS.includes(q) ? q : CATS[0];
 document.title = `${cat} — 일상의 발견`;

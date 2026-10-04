@@ -16,22 +16,22 @@
 <header class="top">
   <a class="brand" href="#top"><b>일상의 발견</b><small>DAILY DISCOVERIES</small></a>
   <nav class="menu" id="menu"></nav>
-  <a class="write" href="#comments">댓글 쓰기</a>
+  <a class="write" href="#apply">글 신청하기</a>
 </header>
 
 <div class="flow" id="top">
-  <!-- 3D 서가: 스크롤하면 기사 표지들 사이를 지나간다 -->
+  <!-- 3D 서가: 스크롤하면 카테고리 표지들 사이를 지나간다. 지나간 표지는 왼쪽 위 서가에 꽂혀 남는다 -->
   <section class="tunnel" id="articles">
     <div class="pin">
       <div class="world" id="world"></div>
+      <div class="shelf" id="shelf"></div>
       <div class="info" id="info">
         <span class="i-cat" id="i-cat"></span>
         <h1 class="display" id="i-title"><span class="ln"><span></span></span></h1>
         <p class="i-sum" id="i-sum"></p>
-        <a class="a-link" href="#comments" id="go"><span id="i-meta"></span><span>이야기 남기기 ↗</span></a>
+        <a class="a-link" href="#" id="go"><span id="i-meta"></span><span>↗</span></a>
       </div>
-      <div class="count" id="count"></div>
-      <div class="cats" id="cats"></div>
+      <button class="next" id="next" type="button"><span class="n-hint">아래로 밀거나 눌러서</span><span id="n-label">다음</span><i aria-hidden="true">↓</i></button>
       <div class="finale" id="finale"><h2 class="display"><span>가보고, 써보고,</span><span>해보며 발견한 것들</span></h2></div>
     </div>
   </section>
@@ -57,8 +57,8 @@
   <section class="block mag-cats" id="cats-sec" data-reveal>
     <div class="b-head">
       <span class="b-no">카테고리</span>
-      <h2 class="b-title"><span class="ln"><span>다섯 갈래의</span></span><span class="ln"><span>일상</span></span></h2>
-      <p>공간·음식·여행·운동·취미·생활·사람을 다섯 갈래로 나눠 담아요.</p>
+      <h2 class="b-title"><span class="ln"><span id="cat-count"></span></span><span class="ln"><span>일상</span></span></h2>
+      <p>일상의 이야기를 갈래별로 나눠 담아요. 눌러서 그 갈래의 글만 볼 수 있어요.</p>
     </div>
     <ul class="catlist" id="catlist"></ul>
   </section>
@@ -75,37 +75,33 @@
     </div>
   </section>
 
-  <section class="block readers" id="readers" data-reveal>
+  <section class="block apply" id="apply" data-reveal>
     <div class="b-head">
-      <span class="b-no">독자</span>
-      <h2 class="b-title"><span class="ln"><span>이번 호의</span></span><span class="ln"><span>독자들</span></span></h2>
-      <p>댓글을 남긴 사람이 여기에 실려요. 가장 최근 순서예요.</p>
-    </div>
-    <ul class="wall" id="wall"></ul>
-  </section>
-
-  <section class="block comments" id="comments" data-reveal>
-    <div class="b-head">
-      <span class="b-no">댓글</span>
-      <h2 class="b-title"><span class="ln"><span>읽고 난 뒤의</span></span><span class="ln"><span>이야기</span></span></h2>
-      <p>이름과 함께 남기면 위쪽 독자 자리에 바로 실려요.</p>
+      <span class="b-no">글 신청</span>
+      <h2 class="b-title"><span class="ln"><span>매거진에</span></span><span class="ln"><span>글 신청하기</span></span></h2>
+      <p>카페·음식점·공간을 운영하신다면 가게 이야기를 들려 주세요. 에디터가 확인하고 연락드려요.</p>
     </div>
     <div class="b-body">
-      <form id="form" class="form" autocomplete="off">
+      <form id="apply-form" class="form" autocomplete="on">
         <div class="row">
-          <label>이름<input name="name" maxlength="16" required placeholder="표지에 실릴 이름"></label>
-          <label>기사<select name="article" id="pick"></select></label>
+          <label>가게·브랜드 이름<input name="shop" maxlength="40" required placeholder="예: 골목 돌솥집"></label>
+          <label>업종<select name="kind"><option>카페</option><option>음식점</option><option>공간·숙소</option><option>운동·취미</option><option>반려동물</option><option>기타</option></select></label>
         </div>
-        <label>내용<textarea name="text" maxlength="300" rows="3" required placeholder="읽고 떠오른 이야기를 남겨 주세요"></textarea></label>
-        <div class="row end"><span class="msg" id="msg" role="status"></span><button type="submit">남기기</button></div>
+        <div class="row">
+          <label>담당자 이름<input name="name" maxlength="40" required autocomplete="name" placeholder="연락받으실 분"></label>
+          <label>연락처<input name="contact" maxlength="40" required inputmode="email" placeholder="전화번호 또는 이메일"></label>
+        </div>
+        <label>소개하고 싶은 이야기<textarea name="text" maxlength="600" rows="4" required placeholder="어떤 가게인지, 어떤 점을 알리고 싶은지 적어 주세요"></textarea></label>
+        <label class="agree"><input type="checkbox" name="agree" required><span>신청 확인과 연락을 위해 이름·연락처를 수집하는 데 동의합니다.</span></label>
+        <div class="row end"><span class="msg" id="apply-msg" role="status"></span><button type="submit">신청하기</button></div>
       </form>
-      <ul class="list" id="list"></ul>
     </div>
   </section>
 
   <footer class="foot2" id="foot"></footer>
 </div>
 <script src="data.js"></script>
+<script src="store.js"></script>
 <script src="app.js"></script>
 <script src="footer.js"></script>
 <script src="reader.js"></script>
