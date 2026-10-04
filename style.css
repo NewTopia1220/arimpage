@@ -442,38 +442,40 @@ button { background: var(--accent); }
 /* 휴대폰: 아래 기사 글을 조금 올린다(홈 막대 · 주소창에 붙지 않게) */
 @media (max-width: 760px) { .info { bottom: calc(34px + env(safe-area-inset-bottom)); } }
 
-/* ── 첫 화면 서가: 카테고리 칸. 지나간 표지가 제 칸에 꽂혀 남는다 ── */
-.shelf { position: absolute; left: var(--gut); top: 96px; z-index: 4; display: flex; gap: 16px; }
-.shelf button { width: 84px; padding: 0; border-radius: 0; background: none; color: inherit; display: grid; gap: 9px; align-content: start; text-align: left; font-weight: 500; }
-.shelf button:active { transform: none; }
-.slot { position: relative; display: grid; place-items: center; aspect-ratio: 3 / 4; border-radius: 3px; border: 1px dashed color-mix(in srgb, currentColor 38%, transparent); font-family: var(--serif); font-size: 18px; color: color-mix(in srgb, currentColor 55%, transparent); transition: border-color .3s; }
-.slot img { position: absolute; inset: -1px; width: calc(100% + 2px); height: calc(100% + 2px); object-fit: cover; border-radius: 3px; opacity: 0; box-shadow: 0 12px 20px -10px rgba(0, 0, 0, .5); will-change: transform, opacity; pointer-events: none; }
-.shelf .nm { font-size: 12.5px; line-height: 1.3; opacity: .5; transition: opacity .3s; }
-.shelf button[aria-current="true"] .nm, .shelf .done .nm { opacity: 1; }
-.shelf button[aria-current="true"] .slot { border: 1px solid currentColor; }
-.shelf button[aria-current="true"] .nm { font-weight: 700; }
-/* 넘기는 방법: 오른쪽 아래 단추. 처음에는 안내 문구가 같이 보이고, 한 번 움직이면 「다음」만 남는다 */
-.next { position: absolute; right: var(--gut); bottom: 30px; z-index: 4; display: inline-flex; align-items: center; gap: 7px; min-height: 44px; padding: 0 18px; font-size: 14px; background: color-mix(in srgb, var(--fg) 12%, transparent); color: inherit; box-shadow: inset 0 0 0 1px color-mix(in srgb, currentColor 30%, transparent); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
-.next i { font-style: normal; animation: nudge 1.6s var(--ease) infinite; }
-body[data-moved] .n-hint { display: none; }
+/* ── 첫 화면 갈래 판: 하나만 펼쳐지고 나머지는 띠로 접혀 남는다. PC 는 옆으로, 휴대폰은 위아래로 ── */
+:root { --bgc: #F8F6F1; }
+.tunnel { height: calc((var(--n) - 1) * 70svh + 120svh); }
+.tunnel .pin { perspective: none; padding: calc(72px + env(safe-area-inset-top)) var(--gut) 24px; }
+.deck { height: 100%; display: flex; gap: var(--gap); }
+.pane { position: relative; flex: calc(var(--w, 0) * 100 + .001) 1 var(--spine); min-width: 0; min-height: 0; overflow: hidden; border-radius: 6px; background: var(--beige); color: #fff; }
+.pane img { position: absolute; left: 50%; top: 0; width: var(--open); max-width: none; height: 100%; object-fit: cover; transform: translateX(-50%); }
+.pane::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to top, rgba(20, 18, 15, .8), rgba(20, 18, 15, .04) 62%), rgba(20, 18, 15, calc((1 - var(--w, 0)) * .46)); }
+.p-spine { position: absolute; inset: 0; z-index: 1; display: flex; flex-direction: column; align-items: center; gap: 16px; padding: 20px 0; opacity: calc(1 - var(--w, 0) * 3); background: linear-gradient(to bottom, rgba(20, 18, 15, .6), transparent 48%); }
+.p-spine i { font-style: normal; font-family: var(--serif); font-size: 19px; opacity: .8; }
+.p-spine b { writing-mode: vertical-rl; font-family: "Noto Serif KR", var(--serif); font-weight: 600; font-size: 19px; letter-spacing: .1em; white-space: nowrap; }
+.p-body { position: absolute; z-index: 1; left: 0; bottom: 0; width: var(--open); padding: clamp(24px, 3vw, 46px); display: grid; gap: 10px; justify-items: start; opacity: calc(var(--w, 0) * 3 - 2); }
+.p-body small { font-size: 13px; opacity: .85; font-variant-numeric: tabular-nums; }
+.p-body strong { font-family: var(--serif); font-weight: 400; font-size: clamp(44px, 6.4vw, 104px); line-height: 1.02; letter-spacing: -.035em; }
+.p-body em { font-style: normal; font-size: 16px; line-height: 1.5; opacity: .92; }
+.p-body u { margin-top: 10px; display: inline-flex; align-items: center; min-height: 44px; padding: 0 20px; border-radius: 99px; background: #fff; color: var(--ink); font-size: 14px; font-weight: 600; text-decoration: none; }
+.p-hint { position: absolute; z-index: 1; left: 16px; top: 16px; display: inline-flex; gap: 6px; padding: 9px 14px; border-radius: 99px; background: rgba(20, 18, 15, .45); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); font-size: 13px; transition: opacity .4s; }
+.p-hint i { font-style: normal; animation: nudge 1.6s var(--ease) infinite; }
+body[data-moved] .p-hint { opacity: 0; }
 @keyframes nudge { 50% { transform: translateY(4px); } }
-.info .i-cat { font-variant-numeric: tabular-nums; }
-.info .display { font-size: clamp(34px, 4.6vw, 76px); }
+@media (hover: hover) { .pane { transition: filter .3s; } .pane:hover { filter: brightness(1.08); } }
 .catlist li { display: block; padding: 0; }
 .catlist a { display: flex; justify-content: space-between; align-items: baseline; padding: 18px 0; }
 .catlist a:hover b { color: var(--accent); }
 @media (max-width: 760px) {
-  .shelf { left: 16px; right: 16px; top: calc(60px + env(safe-area-inset-top)); gap: 8px; }
-  .shelf button { flex: 1; width: auto; min-width: 0; gap: 6px; }
-  .slot { width: 42px; font-size: 14px; }
-  .shelf .nm { font-size: 11px; }
-  .card { top: 46%; }
-  .info { right: 16px; bottom: calc(86px + env(safe-area-inset-bottom)); }
-  .info .display { font-size: 30px; } .i-sum { display: block; margin: 8px 0 6px; font-size: 14px; }
-  .next { left: 16px; right: 16px; bottom: calc(26px + env(safe-area-inset-bottom)); justify-content: center; }
+  .tunnel .pin { padding: calc(62px + env(safe-area-inset-top)) 16px calc(16px + env(safe-area-inset-bottom)); }
+  .deck { flex-direction: column; }
+  .pane img { left: 0; top: 50%; width: 100%; height: var(--open); transform: translateY(-50%); }
+  .p-spine { flex-direction: row; gap: 12px; padding: 0 16px; background: linear-gradient(to right, rgba(20, 18, 15, .6), transparent 75%); }
+  .p-spine b { writing-mode: horizontal-tb; font-size: 17px; letter-spacing: 0; }
+  .p-body { width: 100%; padding: 20px; gap: 6px; }
+  .p-body strong { font-size: 36px; } .p-body em { font-size: 14.5px; }
 }
-@media (max-width: 760px) and (max-height: 700px) { .card { top: 47%; } .slot { width: 34px; } .i-sum { display: none; } .info .display { font-size: 24px; } }
-@media (prefers-reduced-motion: reduce) { .next i { animation: none; } }
+@media (prefers-reduced-motion: reduce) { .p-hint i { animation: none; } }
 
 /* ── 글 신청 폼 · 기사 안 댓글 ── */
 .apply.block { padding-bottom: 110px; }

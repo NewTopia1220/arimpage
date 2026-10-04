@@ -1,89 +1,47 @@
-/* 일상의 발견 (Marketing Magazine) — 첫 화면 3D 서가(카테고리 표지) · 아래 매거진 영역 · 글 신청 */
+/* 일상의 발견 (Marketing Magazine) — 첫 화면 갈래 판(카테고리) · 아래 매거진 영역 · 글 신청 */
 const $ = (s, r = document) => r.querySelector(s);
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 const catHref = (c) => `category.html?c=${encodeURIComponent(c)}`;
 const countOf = (c) => ARTICLES.filter((a) => a.cat === c).length;
 const no = (i) => String(i + 1).padStart(2, "0");
 
-// ── 3D 서가: 카테고리 표지들이 깊이 방향으로 줄지어 있고, 스크롤하면 그 사이를 지나간다 ──
-// 지나간 표지는 사라지지 않고 왼쪽 위 서가(#shelf)의 제 칸으로 날아가 꽂힌다 → 몇 갈래인지 · 무엇이 있는지 한눈에 남는다
-const N = CATEGORIES.length, D = 950, P = 1100;
-const world = $("#world"), tunnel = $(".tunnel"), info = $("#info"), shelf = $("#shelf"), next = $("#next"), root = document.documentElement;
+// ── 첫 화면 갈래 판 ──
+// 카테고리 판이 처음부터 전부 보인다. 하나만 펼쳐져 있고 나머지는 띠로 접혀 있다.
+// 스크롤하면 펼쳐진 판이 접히면서 다음 판이 펼쳐진다 → 지나간 갈래도 띠로 남아 몇 갈래인지 · 무엇이 있는지 늘 보인다.
+// 기울이거나 돌리지 않는다. 움직이는 것은 판의 폭(휴대폰은 높이)뿐이다.
+const N = CATEGORIES.length;
+const deck = $("#deck"), tunnel = $(".tunnel");
 const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
-tunnel.style.setProperty("--n", N);
-// 화면 폭·높이에 대한 % 자리. 데스크톱은 왼쪽 글을 피해 오른쪽으로, 마지막 표지는 가운데
-const SIDE = innerWidth < 760 ? [[-12, -2], [12, 1], [-8, 2], [10, -2]] : [[14, -2], [22, 2], [12, 3], [24, -3]];
-const pos = (i) => (i === N - 1 ? [0, 0] : SIDE[i % SIDE.length]);
-world.innerHTML = CATEGORIES.map((c, i) => `<a class="card" href="${catHref(c.name)}" data-i="${i}"><img src="${c.img}" alt="" draggable="false"><span class="k-no"><b>${c.name}</b><span>${no(i)}</span></span></a>`).join("");
-shelf.innerHTML = CATEGORIES.map((c, i) => `<button type="button" data-i="${i}" aria-label="${c.name} 보기"><span class="slot">${no(i)}<img src="${c.img}" alt=""></span><span class="nm">${c.name}</span></button>`).join("");
-const cards = [...world.children], slots = [...shelf.children], thumbs = slots.map((b) => $("img", b));
-$("#menu").innerHTML = CATS.map((c) => `<a href="${catHref(c)}">${c}</a>`).join("");
-let active = -1, z = reduced ? 0 : -2600, vel = 0, lastZ = 0, px = 0, py = 0, tx = 0, ty = 0;
-const hex = (h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16));
-const BG = CATEGORIES.map((c) => hex(c.bg));
 const clamp = (x) => Math.min(1, Math.max(0, x));
-function setInfo(i) {
-  active = i; const c = CATEGORIES[i];
-  slots.forEach((b, k) => b.setAttribute("aria-current", k === i));
-  $("#n-label").textContent = i === N - 1 ? "글 보러 가기" : "다음";
-  info.classList.add("swap");
-  setTimeout(() => {
-    $("#i-cat").textContent = `카테고리 ${no(i)} / ${no(N - 1)}`; $("#i-title .ln > span").textContent = c.name; $("#i-sum").textContent = c.desc;
-    $("#i-meta").textContent = `글 ${countOf(c.name)}편 보기`; $("#go").href = catHref(c.name);
-    info.classList.remove("swap");
-  }, 260);
+tunnel.style.setProperty("--n", N);
+deck.innerHTML = CATEGORIES.map((c, i) => `<a class="pane" href="${catHref(c.name)}" data-i="${i}"><img src="${c.img}" alt="" draggable="false" style="object-position:${c.pos || "50% 50%"}"><span class="p-spine"><i>${no(i)}</i><b>${c.name}</b></span>${i ? "" : `<span class="p-hint">아래로 내리면 다음 갈래 <i aria-hidden="true">↓</i></span>`}<span class="p-body"><small>카테고리 ${no(i)} / ${no(N - 1)}</small><strong>${c.name}</strong><em>${c.desc}</em><u>글 ${countOf(c.name)}편 보기 ↗</u></span></a>`).join("");
+const panes = [...deck.children];
+$("#menu").innerHTML = CATS.map((c) => `<a href="${catHref(c)}">${c}</a>`).join("");
+// 접힌 띠의 굵기와 펼친 판의 크기. 사진과 글은 펼친 크기에 고정해 두어서, 판이 접혀도 다시 줄 바꿈되거나 늘어나지 않는다
+function measure() {
+  const col = innerWidth < 760, spine = col ? 54 : 78, gap = col ? 8 : 10;
+  deck.style.setProperty("--spine", spine + "px"); deck.style.setProperty("--gap", gap + "px");
+  deck.style.setProperty("--open", Math.max(120, (col ? deck.clientHeight : deck.clientWidth) - (N - 1) * (spine + gap)) + "px");
 }
-const span = () => tunnel.offsetHeight - innerHeight * 2.3;
-const scrollToCard = (i) => scrollTo({ top: tunnel.offsetTop + (i / (N - 1)) * span(), behavior: reduced ? "auto" : "smooth" });
-// 앞에 온 표지를 누르면 그 카테고리로, 뒤에 있는 표지를 누르면 그 표지 앞으로 간다
-world.addEventListener("click", (e) => { const c = e.target.closest(".card"); if (!c) return; const i = +c.dataset.i; if (i !== active) { e.preventDefault(); scrollToCard(i); } });
-shelf.addEventListener("click", (e) => { const b = e.target.closest("button"); if (b) scrollToCard(+b.dataset.i); });
-next.addEventListener("click", () => active < N - 1 ? scrollToCard(active + 1) : $("#lead-sec").scrollIntoView({ behavior: reduced ? "auto" : "smooth" }));
+measure(); addEventListener("resize", measure);
+const span = () => tunnel.offsetHeight - innerHeight * 1.2;
+const scrollToPane = (i) => scrollTo({ top: tunnel.offsetTop + (i / (N - 1)) * span(), behavior: reduced ? "auto" : "smooth" });
+let f = 0, drawn = -1, active = 0;
+// 펼쳐진 판을 누르면 그 카테고리로, 접힌 띠를 누르면 그 판을 펼친다
+deck.addEventListener("click", (e) => { const p = e.target.closest(".pane"); if (!p) return; const i = +p.dataset.i; if (i !== active) { e.preventDefault(); scrollToPane(i); } });
 addEventListener("scroll", () => scrollY > 60 && (document.body.dataset.moved = "1"), { passive: true });
-addEventListener("pointermove", (e) => { px = (e.clientX / innerWidth) * 2 - 1; py = (e.clientY / innerHeight) * 2 - 1; });
-let last = performance.now(), t = 0;
+let last = performance.now();
 (function frame(now) {
   requestAnimationFrame(frame);
-  const dt = Math.min(0.05, (now - last) / 1000); last = now; t += dt;
-  const sp = span();
-  const raw = (scrollY - tunnel.offsetTop) / sp;              // 0 → 1 : 첫 표지 → 마지막 표지
-  const finP = clamp((raw - 1) * sp / (innerHeight * 1.1));   // 끝에서는 마지막 표지 속으로
-  const target = clamp(raw) * (N - 1) * D + finP * P * 0.62;
-  z = reduced ? target : z + (target - z) * (1 - Math.exp(-6 * dt));
-  tx += (px - tx) * (1 - Math.exp(-4 * dt)); ty += (py - ty) * (1 - Math.exp(-4 * dt));
-  world.style.transform = `translate3d(${-tx * 1.2}vw, ${-ty * 1.2}vh, ${z}px) rotateY(${tx * 3}deg) rotateX(${-ty * 2}deg)`;
-  vel += ((z - lastZ) / Math.max(dt, 0.001) - vel) * (1 - Math.exp(-8 * dt)); lastZ = z;
-  const tilt = reduced ? 0 : Math.max(-16, Math.min(16, vel * 0.006));
-  const f = z / D, near = Math.min(N - 1, Math.max(0, Math.round(f)));
-  cards.forEach((c, i) => {
-    const d = i - f;                                          // 0 = 바로 앞, 양수 = 아직 멀리
-    const fin = i === N - 1 ? finP : 0;
-    const [x, y] = pos(i);
-    const bob = reduced ? 0 : Math.sin(t * 0.8 + i * 1.7) * 6;
-    const far = clamp(d), e = far * far * (3 - 2 * far);       // 멀리 있을 땐 옆으로 돌아서 있다가 다가오며 정면으로
-    c.style.transform = `translate3d(${x * (1 - fin) + (i % 2 ? 9 : -9) * e}vw, ${y * (1 - fin)}vh, ${-i * D}px) translateY(${bob}px) rotateY(${(i % 2 ? -1 : 1) * 62 * e * (1 - fin) + (i === near ? tx * 9 : 0) + tilt}deg) rotateX(${i === near ? -ty * 6 : 0}deg) rotateZ(${(i % 2 ? 5 : -5) * e}deg)`;
-    c.style.opacity = d < -0.12 && !fin ? clamp(1 + (d + 0.12) * 5) : clamp(1.15 - d * 0.3);
-    c.style.pointerEvents = Math.abs(d) < 1.2 ? "auto" : "none";
-    // 서가: 표지가 지나가면 무대 가운데에서 제 칸으로 줄어들며 꽂힌다(스크롤을 되돌리면 다시 빠져나온다)
-    const p = i === N - 1 ? clamp(finP * 1.6) : clamp((-d - 0.16) / 0.5), k = 1 - (1 - p) ** 3, im = thumbs[i];
-    if (p > 0 && p < 1) {
-      const r = slots[i].firstChild.getBoundingClientRect(), s = Math.min(5, c.offsetWidth / r.width);
-      im.style.transform = `translate(${(innerWidth * (0.5 + x / 100) - r.left - r.width / 2) * (1 - k)}px, ${(innerHeight * 0.5 - r.top - r.height / 2) * (1 - k)}px) scale(${1 + (s - 1) * (1 - k)})`;
-    } else im.style.transform = "";
-    im.style.opacity = clamp(p * 2.5);
-    slots[i].classList.toggle("done", p >= 1);
-  });
-  if (near !== active) setInfo(near);
-  const a = Math.floor(clamp(f / (N - 1)) * (N - 1) * 0.9999), k = f - a;
-  const bg = [0, 1, 2].map((ch) => Math.round(BG[a][ch] + (BG[Math.min(N - 1, a + 1)][ch] - BG[a][ch]) * clamp(k)));
-  const inTunnel = scrollY < tunnel.offsetTop + tunnel.offsetHeight - innerHeight * 0.5;
-  root.style.setProperty("--bgc", inTunnel ? `rgb(${bg})` : "#F8F6F1");
-  const lum = inTunnel ? (bg[0] * 299 + bg[1] * 587 + bg[2] * 114) / 1000 : 200;
-  const tone = lum > 110 ? "light" : "dark";
-  if (document.body.dataset.tone !== tone) document.body.dataset.tone = tone;
-  const past = inTunnel ? "0" : "1"; if (document.body.dataset.past !== past) document.body.dataset.past = past;
-  const fo = clamp((finP - 0.55) / 0.3);
-  $("#finale").style.setProperty("--fo", fo); info.style.visibility = fo > 0.1 ? "hidden" : "visible"; next.style.opacity = shelf.style.opacity = 1 - fo; next.style.visibility = fo > 0.9 ? "hidden" : "visible";
+  const dt = Math.min(0.05, (now - last) / 1000); last = now;
+  const target = clamp((scrollY - tunnel.offsetTop) / span()) * (N - 1);
+  f = reduced ? target : f + (target - f) * (1 - Math.exp(-9 * dt));
+  const past = scrollY > tunnel.offsetTop + tunnel.offsetHeight - innerHeight * 0.6 ? "1" : "0";
+  if (document.body.dataset.past !== past) document.body.dataset.past = past;
+  if (Math.abs(f - drawn) < 0.0004) return; drawn = f;
+  const b = Math.min(N - 2, Math.floor(f)), k = f - b, fe = b + k * k * (3 - 2 * k);   // 판 사이에서는 부드럽게 넘어가고, 판 위에서는 머문다
+  active = Math.round(fe);
+  panes.forEach((p, i) => p.style.setProperty("--w", Math.max(0, 1 - Math.abs(i - fe)).toFixed(4)));
 })(last);
 
 // 아래쪽 덩어리: 들어올 때 제목 글줄이 올라오고 목록이 차례로 나타난다
